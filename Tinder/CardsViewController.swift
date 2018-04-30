@@ -10,10 +10,11 @@ import UIKit
 
 class CardsViewController: UIViewController {
     
-    @IBOutlet weak var Pictures: UIImageView!
+    @IBOutlet weak var FirstIV: UIImageView!
     var cardInitialCenter: CGPoint!
     var newPic: UIImageView!
     var newPicOriginalCenter: CGPoint!
+    @IBOutlet weak var pictureView: UIView!
     
     
     override func viewDidLoad() {
@@ -30,56 +31,83 @@ class CardsViewController: UIViewController {
     
     
     @IBAction func DraggingPicture(_ sender: UIPanGestureRecognizer) {
-        let velocity = sender.velocity(in: view)
-        let translation = sender.translation(in: view)
+        let translation = sender.translation(in: pictureView)
         
         if sender.state == .began {
-            cardInitialCenter = Pictures.center
+            cardInitialCenter = FirstIV.center
+            let IV = sender.view as! UIImageView
+            newPic = UIImageView(image: IV.image)
+            pictureView.addSubview(newPic)
+            FirstIV.alpha = 1
+            newPic.alpha = 0
+            newPic.isUserInteractionEnabled = true
+            let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(newViews(sender:)))
+            newPic.addGestureRecognizer(panGestureRecognizer)
         }
         
         if sender.state == .changed {
-            Pictures.center = CGPoint(x: cardInitialCenter.x + translation.x, y: cardInitialCenter.y)
+            //*********** Swiping Right
+            FirstIV.center = CGPoint(x: cardInitialCenter.x + translation.x, y: cardInitialCenter.y)
             if translation.x > 0 {
-                Pictures.transform = CGAffineTransform(rotationAngle:CGFloat(7 * M_PI/180))
+                FirstIV.transform = CGAffineTransform(rotationAngle:CGFloat(7 * M_PI/180))
                 if translation.x > 65 {
-           //*********** Swiping Right
-                    let IV = sender.view as! UIImageView
-                    newPic = UIImageView(image: IV.image)
-                    view.addSubview(newPic)
-                    Pictures.alpha = 1
-                    newPic.alpha = 0
                     UIView.animate(withDuration: 2) {
-                        self.Pictures.alpha = 0
+                        self.FirstIV.removeFromSuperview()
                         self.newPic.alpha = 1
-                        self.newPic.isUserInteractionEnabled = true
                     }
                 }
             }
             if translation.x < 0 {
-                Pictures.transform = CGAffineTransform(rotationAngle:CGFloat(-7 * M_PI/180))
+                //******** Swiping Left
+                FirstIV.transform = CGAffineTransform(rotationAngle:CGFloat(-7 * M_PI/180))
                 if translation.x < -65 {
-        //******** Swiping Left 
-                    let IV = sender.view as! UIImageView
-                    newPic = UIImageView(image: IV.image)
-                    view.addSubview(newPic)
-                    Pictures.alpha = 1
-                    newPic.alpha = 0
                     UIView.animate(withDuration: 2) {
-                        self.Pictures.alpha = 0
+                        self.FirstIV.removeFromSuperview()
                         self.newPic.alpha = 1
-                        self.newPic.isUserInteractionEnabled = true
                     }
                 }
             }
         }
         if sender.state == .ended {
-            if Pictures == Pictures {
-                Pictures.center = cardInitialCenter
-                Pictures.transform = CGAffineTransform.identity
+            if FirstIV == FirstIV {
+                FirstIV.center = cardInitialCenter
+                FirstIV.transform = CGAffineTransform.identity
             } else {
                 newPic.center = cardInitialCenter
                 newPic.transform = CGAffineTransform.identity
             }
         }
     }
+    
+    @objc func newViews(sender:UIPanGestureRecognizer){
+        let translation = sender.translation(in: pictureView)
+        
+        if sender.state == .began {
+            newPic = sender.view as! UIImageView
+            cardInitialCenter = newPic.center
+        }
+        if sender.state == .changed {
+            if translation.x > 0 {
+                newPic.transform = CGAffineTransform(rotationAngle:CGFloat(7 * M_PI/180))
+                newPic.center = CGPoint(x: cardInitialCenter.x + translation.x, y: cardInitialCenter.y)
+                if translation.x > 65 {
+                    UIView.animate(withDuration: 2) {
+                        self.newPic.removeFromSuperview()
+                    }
+                }
+                if translation.x < 0 {
+                    newPic.transform = CGAffineTransform(rotationAngle:CGFloat(-7 * M_PI/180))
+                    newPic.center = CGPoint(x: cardInitialCenter.x + translation.x, y: cardInitialCenter.y)
+                    if translation.x < -65 {
+                        UIView.animate(withDuration: 2) {
+                            self.newPic.removeFromSuperview()
+                        }}}}}}
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        
+        let ProfileViewController = segue.destination as! ProfileViewController
+        
+    }
+    
+    
 }
