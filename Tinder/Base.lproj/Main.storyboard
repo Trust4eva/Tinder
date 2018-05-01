@@ -78,17 +78,21 @@
                                 <rect key="frame" x="16" y="144" width="343" height="387"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="nav_bar2" translatesAutoresizingMaskIntoConstraints="NO" id="Gc9-x3-OKP">
-                                <rect key="frame" x="0.0" y="61" width="375" height="65"/>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5aI-6c-Reu">
+                                <rect key="frame" x="1" y="52" width="374" height="65"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <gestureRecognizers/>
-                            </imageView>
+                                <state key="normal" title="Button" image="nav_bar2"/>
+                                <connections>
+                                    <action selector="Button:" destination="z34-AQ-0OI" eventType="touchUpInside" id="VyO-1R-bty"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <viewLayoutGuide key="safeArea" id="6A5-Vu-qx9"/>
                     </view>
                     <connections>
                         <outlet property="ProfilePic" destination="oOS-GV-HOy" id="64x-Ry-9pa"/>
+                        <segue destination="BYZ-38-t0r" kind="presentation" identifier="ToCards" id="4DO-5b-GKw"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="y2O-bs-fKg" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -22,7 +22,10 @@ class ProfileViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-
+    @IBAction func Button(_ sender: Any) {
+        performSegue(withIdentifier: "ToCards", sender: nil)
+    }
+    
     /*
     // MARK: - Navigation
 
